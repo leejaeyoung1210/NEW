@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//모든 데이터테이블을 초기화해줘야함. 원할때마다 원하는 테이블을 가져와 셋팅할수있게해줘야함.
 public static class DataTableManger
 {
     private static readonly Dictionary<string, DataTable> tables = new Dictionary<string, DataTable>(); //여러 테이블 가질예정

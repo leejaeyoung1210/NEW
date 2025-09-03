@@ -7,7 +7,7 @@ public enum Languges
     English,
     Japanese,
 }
-
+//모든 데이터테이블의 아이디를 가지고있음 
 public static class DataTableIds
 {
     public static readonly string[] StringTableIds =
