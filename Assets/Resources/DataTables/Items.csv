@@ -1,0 +1,5 @@
+Id,Name,Icon,Number,Number2,String
+Sword,검,Icon_Sword01,10,100,이것은 검이다.
+Potion,물약,Icon_Heart01,20,200,이것은 물약이다.
+Shield,방패,Icon_Shield01,30,300,이것은 방패이다.
+Bow,활,Icon_Bow01,40,400,이것은 활이다.
