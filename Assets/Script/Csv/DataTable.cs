@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public abstract class DataTable
 {
-    public static readonly string FormatPath = "DataTables/{0}"; //저장방법?
+    public static readonly string FormatPath = "DataTables/{0}"; //저장방법? / =>폴더구분자/순서시작
 
     //데이타테이블 추상클래스1 ⇒ load호출을하면 이걸 받은객체르 csv파일이름을 읽어다가 id 가져다 쓸수잇게
     public abstract void Load(string filename);

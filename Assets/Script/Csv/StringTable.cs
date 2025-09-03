@@ -19,9 +19,10 @@ public class StringTable : DataTable
     {//경로(아이디)생성
         dictionary.Clear();
         
-        var path = string.Format(FormatPath, filename);//파일경로만들어서
-        var textAsset = Resources.Load<TextAsset>(path);
-        var list = LoadCSV<Data>(textAsset.text);//읽어오는
+        var path = string.Format(FormatPath, filename);//(파일자리를 가져와,그자리에 벨류값을 넣는다.)
+        var textAsset = Resources.Load<TextAsset>(path);//TextAsset은 .txt, .csv, .json 같은 텍스트 파일을 메모리에 그대로 불러오는 용도로 쓰입니다.
+        //textAsset.text 속성을 사용하면 그 파일의 문자열 내용을 얻을 수 있습니다.
+        var list = LoadCSV<Data>(textAsset.text);//csv파일 가져온걸 Data 형태에 맞게 리스트화함
 
         foreach(var item in list)
         {
@@ -47,4 +48,4 @@ public class StringTable : DataTable
     }
 
 }
-//한번 딕셔너리 만들면 게임끝날때까지 사용 메모리 사용이과하ㅏ지않나? 자주사용할거임 쉽게접근할수있게해줘야함
+//한번 딕셔너리 만들면 게임끝날때까지 사용 메모리 사용이과함? 자주사용할거임 쉽게접근할수있게해줘야함
