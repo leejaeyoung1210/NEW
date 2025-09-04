@@ -28,14 +28,12 @@ public class UiInvenSlotList : MonoBehaviour
 
     public readonly System.Comparison<SaveItemData>[] comparisons =
     {
-        (lhs,rhs) =>lhs.creationTime.CompareTo(rhs.creationTime),
-        (lhs,rhs) =>rhs.creationTime.CompareTo(lhs.creationTime),
-
-        (lhs,rhs) =>lhs.itemData.StringName.CompareTo(rhs.creationTime),
-        (lhs,rhs) =>rhs.itemData.StringName.CompareTo(lhs.creationTime),
-
-        (lhs,rhs) =>lhs.itemData.Cost.CompareTo(rhs.creationTime),
-        (lhs,rhs) =>rhs.itemData.Cost.CompareTo(lhs.creationTime),
+        (lhs, rhs) => lhs.creationTime.CompareTo(rhs.creationTime),
+        (lhs, rhs) => rhs.creationTime.CompareTo(lhs.creationTime),
+        (lhs, rhs) => lhs.itemData.StringName.CompareTo(rhs.itemData.StringName),
+        (lhs, rhs) => rhs.itemData.StringName.CompareTo(lhs.itemData.StringName),
+        (lhs, rhs) => lhs.itemData.Cost.CompareTo(rhs.itemData.Cost),
+        (lhs, rhs) => rhs.itemData.Cost.CompareTo(lhs.itemData.Cost),
     };
 
     public readonly System.Func<SaveItemData, bool>[] filterings =
@@ -153,7 +151,7 @@ public class UiInvenSlotList : MonoBehaviour
 
         if (slotlist.Count < list.Count)
         {            
-            for (int i = slotlist.Count; i < itemList.Count; i++)
+            for (int i = slotlist.Count; i < list.Count; i++)
             {
                 var newSlot = Instantiate(prefab, scollRect.content);
                 newSlot.slotIndex = i;

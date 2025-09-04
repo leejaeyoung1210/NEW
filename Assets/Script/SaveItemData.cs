@@ -9,9 +9,9 @@ public class SaveItemData
     public Guid instanceId;
 
 
-    [JsonConverter(typeof(ItemDataConverter))]
-    public string itemId;
 
+    public string itemId;
+    [JsonConverter(typeof(ItemDataConverter))] //아이템을 직렬화 
     public ItemData itemData;
     
     public DateTime creationTime;
