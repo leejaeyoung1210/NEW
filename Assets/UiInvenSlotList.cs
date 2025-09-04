@@ -1,12 +1,11 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
+using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+using UnityEngine.Events;
+
 
 public class UiInvenSlotList : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class UiInvenSlotList : MonoBehaviour
         Consumable,
     }
 
-    public readonly System.Comparison<SaveItemData>[] comparison =
+    public readonly System.Comparison<SaveItemData>[] comparisons =
     {
         (lhs,rhs) =>lhs.creationTime.CompareTo(rhs.creationTime),
         (lhs,rhs) =>rhs.creationTime.CompareTo(lhs.creationTime),
@@ -53,7 +52,7 @@ public class UiInvenSlotList : MonoBehaviour
     private List<UiInvenSlot> slotlist = new List<UiInvenSlot>();
 
     public int maxCount = 30;
-    private int itemCount = 0;
+    
 
     private List<SaveItemData> testItemList = new List<SaveItemData>();
 
@@ -65,11 +64,8 @@ public class UiInvenSlotList : MonoBehaviour
         get=>sorting;
         set
         {
-            sorting = value;
-
-            var List = testItemList.Where(filterings[(int)filtering]).ToList();
-            List.Sort(comparison[(int)sorting]);
-            UpdateSlots(List);
+            sorting = value;            
+            UpdateSlots(testItemList);
         }
     }
     public FilteringOptions Filtering
@@ -77,14 +73,15 @@ public class UiInvenSlotList : MonoBehaviour
         get => filtering;
         set
         {
-            filtering = value;
-            var List = testItemList.Where(filterings[(int)filtering]).ToList();
-            List.Sort(comparison[(int)sorting]);
-            UpdateSlots(List);
-
+            filtering = value;            
+            UpdateSlots(testItemList);
         }
     }
 
+    private int selectedSlotIndex = -1;
+
+    public UnityEvent onUpdateSlots;
+    public UnityEvent<SaveItemData> onSelectSlot;
     public void Save()
     {
         var jsonText = JsonConvert.SerializeObject(testItemList);
@@ -106,14 +103,7 @@ public class UiInvenSlotList : MonoBehaviour
 
     private void Awake()
     {
-        for(int i =0; i< maxCount; i++)
-        {
-            var newSlot = Instantiate(prefab, scollRect.content);
-            newSlot.slotIndex = i;
-            newSlot.SetEmpty();
-            newSlot.gameObject.SetActive(false);    //°¡¸®±â
-            slotlist.Add(newSlot);
-        }
+        
     }
     private void OnEnable()
     {
@@ -124,46 +114,59 @@ public class UiInvenSlotList : MonoBehaviour
         Save(); 
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            AddRandomItem();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            RemoveItem(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Save();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Load();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Sorting = (SortingOptions)Random.Range(0, 6);
-            Debug.Log(Sorting);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Filtering = (SortingOptions)Random.Range(0, 6);
-            Debug.Log(Sorting);
-        }
-    }
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Alpha1))
+    //    {
+    //        AddRandomItem();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha2))
+    //    {
+    //        RemoveItem();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha3))
+    //    {
+    //        Save();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha4))
+    //    {
+    //        Load();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha5))
+    //    {
+    //        Sorting = (SortingOptions)Random.Range(0, 6);
+    //        Debug.Log(Sorting);
+    //    }
+
+    //    if (Input.GetKeyDown(KeyCode.Alpha6))
+    //    {
+    //        Filtering = (FilteringOptions)Random.Range(0, 4);
+    //        Debug.Log(Filtering);
+    //    }
+    //}
+  
 
     private void UpdateSlots(List<SaveItemData> itemList)
     {
-        if (slotlist.Count == itemList.Count)
+        var list = itemList.Where(filterings[(int)filtering]).ToList();
+        list.Sort(comparisons[(int)sorting]);
+
+        if (slotlist.Count < list.Count)
         {            
             for (int i = slotlist.Count; i < itemList.Count; i++)
             {
                 var newSlot = Instantiate(prefab, scollRect.content);
                 newSlot.slotIndex = i;
                 newSlot.SetEmpty();
-                slotlist[i].gameObject.SetActive(false);
+                newSlot.gameObject.SetActive(false);
+
+                var button = newSlot.GetComponent<Button>();
+                button.onClick.AddListener(() =>
+                {
+                    selectedSlotIndex = newSlot.slotIndex;
+                    onSelectSlot.Invoke(newSlot.ItemData);
+                });
+
                 slotlist.Add(newSlot);
             }
         }
@@ -181,7 +184,9 @@ public class UiInvenSlotList : MonoBehaviour
                 slotlist[i].SetEmpty();
                 slotlist[i].gameObject.SetActive(false);
             }
-        }      
+        }
+        selectedSlotIndex = -1;
+        onUpdateSlots.Invoke();
     }
 
 
@@ -193,10 +198,15 @@ public class UiInvenSlotList : MonoBehaviour
         testItemList.Add(itemInstance);
         UpdateSlots(testItemList);
     }
-    public void RemoveItem(int slotIndex)
-    {        
-        testItemList.RemoveAt(slotIndex);
+    public void RemoveItem()
+    {
+        if(selectedSlotIndex ==-1)
+        {
+            return;
+        }
+        testItemList.Remove(slotlist[selectedSlotIndex].ItemData);
         UpdateSlots(testItemList);
+
     }
     
 }
