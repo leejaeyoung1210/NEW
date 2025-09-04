@@ -12,7 +12,12 @@ public class CSVTest2 : MonoBehaviour
     //    text.text = stringTable.Get("Hello");
     //}
 
-  
+
+    private void Start()
+    {
+        var table = new ItemTable();
+        table.Load("ItemTable");
+    }
 
 
 }

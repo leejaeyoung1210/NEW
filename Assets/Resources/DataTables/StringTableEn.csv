@@ -2,3 +2,11 @@ Id,String
 HELLO,hello
 BYE,bye
 YOU DIE,you die
+Item1Name,검(영어)
+Item2Name,방패(영어)
+Item3Name,활 (영어)
+Item4Name,물약 (영어)
+Item1Desc,이것은 검이다.(영어)
+Item2Desc,이것은 방패다.(영어)
+Item3Desc,이것은 활이다.(영어)
+Item4Desc,이것은 물약이다.(영어)
