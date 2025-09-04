@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -62,7 +63,7 @@ public class ItemTable : DataTable
             }
         }
 
-        foreach(var item in table)//테스트 찍는용   
+        foreach (var item in table)//테스트 찍는용   
         {
             //Debug.Log(item.Value);
             //var data = table.
@@ -88,6 +89,12 @@ public class ItemTable : DataTable
     //클릭시 정보표현 //삭제버튼시 지우기
     //프리팹에 버튼 위에이미지 배경 아래 텍스트
     //아이템 스크립트에 프리팹붙여서 만들고
+    public ItemData GetRandom()
+    {
+        var itemsList = table.Values.ToList();
+        return itemsList[Random.Range(0, itemsList.Count)];
+
+    }
 
 
 }
