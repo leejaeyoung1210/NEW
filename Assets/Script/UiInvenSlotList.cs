@@ -198,7 +198,7 @@ public class UiInvenSlotList : MonoBehaviour
     }
     public void RemoveItem()
     {
-        if(selectedSlotIndex ==-1)
+        if(selectedSlotIndex == -1 )
         {
             return;
         }
