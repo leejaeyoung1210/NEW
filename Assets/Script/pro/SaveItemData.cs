@@ -10,7 +10,7 @@ public class SaveItemData
 
 
 
-    public string itemId;
+    //public string itemId;
     [JsonConverter(typeof(ItemDataConverter))] //아이템을 직렬화 
     public ItemData itemData;
     

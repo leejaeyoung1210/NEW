@@ -52,7 +52,7 @@ public class UiInvenSlotList : MonoBehaviour
     public int maxCount = 30;
     
 
-    private List<SaveItemData> testItemList = new List<SaveItemData>();
+    private List<SaveItemData> saveitemlist = new List<SaveItemData>();
 
     private SortingOptions sorting = SortingOptions.NaemAccending;
     private FilteringOptions filtering = FilteringOptions.None;
@@ -63,7 +63,7 @@ public class UiInvenSlotList : MonoBehaviour
         set
         {
             sorting = value;            
-            UpdateSlots(testItemList);
+            UpdateSlots(saveitemlist);
         }
     }
     public FilteringOptions Filtering
@@ -72,7 +72,7 @@ public class UiInvenSlotList : MonoBehaviour
         set
         {
             filtering = value;            
-            UpdateSlots(testItemList);
+            UpdateSlots(saveitemlist);
         }
     }
 
@@ -82,21 +82,32 @@ public class UiInvenSlotList : MonoBehaviour
     public UnityEvent<SaveItemData> onSelectSlot;
     public void Save()
     {
-        var jsonText = JsonConvert.SerializeObject(testItemList);
-        var filePath = Path.Combine(Application.persistentDataPath, "test.json");
-        File.WriteAllText(filePath, jsonText);
+        SaveLoadManager.Data.ItemList = saveitemlist;
+        SaveLoadManager.Save();
+
+        //var jsonText = JsonConvert.SerializeObject(testItemList);
+        //var filePath = Path.Combine(Application.persistentDataPath, "test.json");
+        //File.WriteAllText(filePath, jsonText);
     }
 
     public void Load()
     {
-        var filePath = Path.Combine(Application.persistentDataPath, "test.json");
-        if (!File.Exists(filePath))
+        if(SaveLoadManager.Load())
         {
-            return;
+            saveitemlist = SaveLoadManager.Data.ItemList;   
         }
-        var jsonText = File.ReadAllText(filePath);
-        testItemList = JsonConvert.DeserializeObject<List<SaveItemData>>(jsonText);
-        UpdateSlots(testItemList);
+        SaveLoadManager.Load();
+        saveitemlist = SaveLoadManager.Data.ItemList;
+
+
+        //var filePath = Path.Combine(Application.persistentDataPath, "test.json");
+        //if (!File.Exists(filePath))
+        //{
+        //    return;
+        //}
+        //var jsonText = File.ReadAllText(filePath);
+        //testItemList = JsonConvert.DeserializeObject<List<SaveItemData>>(jsonText);
+        UpdateSlots(saveitemlist);
     }
 
     private void Awake()
@@ -193,8 +204,8 @@ public class UiInvenSlotList : MonoBehaviour
         var itemInstance = new SaveItemData();
         itemInstance.itemData = DataTableManger.ItemTable.GetRandom();
 
-        testItemList.Add(itemInstance);
-        UpdateSlots(testItemList);
+        saveitemlist.Add(itemInstance);
+        UpdateSlots(saveitemlist);
     }
     public void RemoveItem()
     {
@@ -202,8 +213,8 @@ public class UiInvenSlotList : MonoBehaviour
         {
             return;
         }
-        testItemList.Remove(slotlist[selectedSlotIndex].ItemData);
-        UpdateSlots(testItemList);
+        saveitemlist.Remove(slotlist[selectedSlotIndex].ItemData);
+        UpdateSlots(saveitemlist);
 
     }
     
