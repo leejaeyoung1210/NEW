@@ -1,7 +1,4 @@
-
 using System.Collections.Generic;
-
-using UnityEditor;
 using UnityEngine;
 
 public class WindowManager : MonoBehaviour
@@ -16,7 +13,7 @@ public class WindowManager : MonoBehaviour
         {
             window.Init(this);
             //window.Close();
-            window.gameObject.SetActive(false); 
+            window.gameObject.SetActive(false);
         }
         CurrentWindow = defaultWindow;
         windows[(int)CurrentWindow].Open();

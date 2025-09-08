@@ -69,3 +69,18 @@ public class SaveDataV3 : SaveData
         throw new NotImplementedException();
     }
 }
+
+[Serializable]
+public class SaveDataV4 : SaveData
+{
+
+
+    public SaveDataV4()
+    {
+        Version = 4;
+    }
+    public override SaveData VersionUp()
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -11,6 +11,10 @@ public class StartWindow : GenericWindow
 
     public Button optionButton;
 
+    public GameObject gameoverPanel;
+    public GameObject keyboardPanel;
+
+
     protected void Awake()
     {
         continueButton.onClick.AddListener(OnClickContinue);
@@ -21,14 +25,17 @@ public class StartWindow : GenericWindow
     {
         continueButton.gameObject.SetActive(canContinue);
         firstSelectde = continueButton.gameObject.activeSelf ? continueButton.gameObject : newGameButtonl.gameObject;
-                
 
+      
         base.Open();
     }
 
     public void OnClickContinue()
     {
-        Debug.Log("continue");
+        gameObject.SetActive(false);
+        gameoverPanel.SetActive(true);
+
+
     }
 
     public void OnClicknewGame()
@@ -38,6 +45,7 @@ public class StartWindow : GenericWindow
 
     public void OnClickOption()
     {
-        Debug.Log("Option");
+        gameObject.SetActive(false);
+        keyboardPanel.SetActive(true);
     }
 }
